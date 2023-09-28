@@ -17,7 +17,7 @@ spec:
       hostPID: true
       hostIPC: true
       nodeSelector:
-        gpu: present
+        nvidia.com/gpu: present
       containers:
       - image: ubuntu:22.04
         name: ctr
