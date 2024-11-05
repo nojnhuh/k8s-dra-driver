@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  k8s-dra-driver:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-11-04T23:41:41.670201-06:00"
+    description: A Helm chart for Kubernetes
+    digest: 453dc7c7d30e885ccbd1339ce27d8e29a27dd7caa89e08759db2bc7cab0530c2
+    name: k8s-dra-driver
+    type: application
+    urls:
+    - k8s-dra-driver-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-11-04T23:41:41.666011-06:00"
