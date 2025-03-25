@@ -1,9 +1,20 @@
 apiVersion: v1
 entries:
+  k8s-dra-driver:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2025-03-25T15:31:04.356003-05:00"
+    description: A Helm chart for Kubernetes
+    digest: 453dc7c7d30e885ccbd1339ce27d8e29a27dd7caa89e08759db2bc7cab0530c2
+    name: k8s-dra-driver
+    type: application
+    urls:
+    - k8s-dra-driver-0.1.0.tgz
+    version: 0.1.0
   nvidia-dra-driver-gpu:
   - apiVersion: v2
     appVersion: 25.3.0-rc.1
-    created: "2025-03-25T15:08:46.182633-05:00"
+    created: "2025-03-25T15:31:04.359575-05:00"
     description: Official Helm chart for the Kubernetes DRA driver for NVIDIA GPUs
     digest: dd7fa829aaea796927c3d6f865421cd56875f603a647a424d0e2c4c72d61e1ec
     name: nvidia-dra-driver-gpu
@@ -11,4 +22,4 @@ entries:
     urls:
     - nvidia-dra-driver-gpu-25.3.0-rc.1.tgz
     version: 25.3.0-rc.1
-generated: "2025-03-25T15:08:46.181494-05:00"
+generated: "2025-03-25T15:31:04.352344-05:00"
