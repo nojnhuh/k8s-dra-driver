@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: Daemonset
+kind: DaemonSet
 metadata:
   namespace: {{ .Namespace }}
   generateName: {{ .GenerateName }}
@@ -36,6 +36,9 @@ spec:
             touch /etc/nvidia-imex-null
             tail -f /dev/null & wait
           fi
+          # Emit nodes config for facilitating debug.
+          echo "/etc/nvidia-imex/nodes_config.cfg:"
+          cat /etc/nvidia-imex/nodes_config.cfg
           /usr/bin/nvidia-imex -c /etc/nvidia-imex/config.cfg
           tail -n +1 -f /var/log/nvidia-imex.log & wait
         resources:
@@ -50,7 +53,7 @@ spec:
               if [ -f /etc/nvidia-imex-null ]; then
                 exit 0
               fi
-              test "$(nvidia-imex-ctl -q)" = "READY"
+              test "$(nvidia-imex-ctl -q -i 127.0.0.1 50005)" = "READY"
           initialDelaySeconds: 1
           periodSeconds: 1
         livenessProbe:
@@ -62,9 +65,18 @@ spec:
                 if [ -f /etc/nvidia-imex-null ]; then
                   exit 0
                 fi
-                test "$(nvidia-imex-ctl -q)" = "READY"
+                test "$(nvidia-imex-ctl -q -i 127.0.0.1 50005)" = "READY"
           initialDelaySeconds: 10
           periodSeconds: 5
+      # Repel all node taints.
+      # See https://github.com/NVIDIA/k8s-dra-driver-gpu/issues/305
+      tolerations:
+        - operator: "Exists"
+          effect: "NoSchedule"
+        - operator: "Exists"
+          effect: "NoExecute"
+        - operator: "Exists"
+          effect: "PreferNoSchedule"
       resourceClaims:
       - name: compute-domain-daemon
         resourceClaimTemplateName: {{ .ResourceClaimTemplateName }}

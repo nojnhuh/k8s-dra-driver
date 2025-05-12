@@ -67,7 +67,7 @@ spec:
             sed -i 's/^ModifyDeviceFiles: 1$/ModifyDeviceFiles: 0/' root/gpu-params
             mount --bind root/gpu-params /proc/driver/nvidia/params
           fi
-          compute-domain-kubelet-plugin
+          compute-domain-kubelet-plugin -v 6
         resources:
           {{- toYaml .Values.kubeletPlugin.containers.computeDomains.resources | nindent 10 }}
         env:
@@ -103,6 +103,9 @@ spec:
         - name: driver-root
           mountPath: /driver-root
           readOnly: true
+        # Pragmatic solution for host-managed drivers located not at /.
+        - name: host-dev
+          mountPath: /dev
       {{- end }}
       {{- if .Values.resources.gpus.enabled }}
       - name: gpus
@@ -122,7 +125,7 @@ spec:
             sed -i 's/^ModifyDeviceFiles: 1$/ModifyDeviceFiles: 0/' root/gpu-params
             mount --bind root/gpu-params /proc/driver/nvidia/params
           fi
-          gpu-kubelet-plugin
+          gpu-kubelet-plugin -v 6
         resources:
           {{- toYaml .Values.kubeletPlugin.containers.gpus.resources | nindent 10 }}
         env:
@@ -172,6 +175,9 @@ spec:
       - name: driver-root
         hostPath:
           path: {{ .Values.nvidiaDriverRoot }}
+      - name: host-dev
+        hostPath:
+          path: /dev
       {{- with .Values.kubeletPlugin.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
